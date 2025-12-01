@@ -10,35 +10,95 @@
     <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans+SemiExpanded:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="dropdown">
-        <button class="dropbtn">Carnegie Mellon University</button>
-        <div class="dropdown-content">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
+    
+    <div id="top-frame">
+
+        <div class="dropdown location-name">
+            <button class="dropbtn">Carnegie Mellon University</button>
+            <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </div>
+
+        <div class="search-filter-container">
+            <div class="searchbar">
+                <span class="search-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </span>
+                <input type="text" placeholder="Search bar...">
+            </div>
+            
+            <button class="filter-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" y1="21" x2="4" y2="14"></line>
+                    <line x1="4" y1="10" x2="4" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12" y2="3"></line>
+                    <line x1="20" y1="21" x2="20" y2="16"></line>
+                    <line x1="20" y1="12" x2="20" y2="3"></line>
+                    <line x1="1" y1="14" x2="7" y2="14"></line>
+                    <line x1="9" y1="8" x2="15" y2="8"></line>
+                    <line x1="17" y1="16" x2="23" y2="16"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="zalando-sans-semiexpanded-welcome-message">
+            <h1>Hi Reallycool Name!</h1>
         </div>
     </div>
-    <div class="searchbar">
-        <input type="text" placeholder="Search..">
-    </div>
-    <div class="zalando-sans-semiexpanded-welcome-message">
-        <h1>Scotty's Dashboard</h1>
-    </div>
-    <div class="rewards">
-        <h1>Your Rewards</h1>
-        <h1 class="viewall">View All</h1>
-    </div>
-    <div class="punchcard">
-        PunchCards Here
-    </div>
-    <div class="category">
-        <h1>Category</h1>
-    </div>
 
-    <!-- === NEW CATEGORY SCROLLER HTML === -->
+    <div id="punchcard-frame">
+        <div class="rewards">
+            <h1>Your Rewards</h1>
+            <a href="wallet.html" class="viewall-link">
+                <h1 class="viewall">View All</h1>
+            </a>
+        </div>
+
+        <a href="wallet.html" class="punchcard-stack-link">
+            <div class="punchcard-stack">
+                <div class="punchcard-item stack-card-3">
+                    <div class="card-footer">
+                        <span>Biz name 3</span>
+                        <span class="cool-logo">LOGO</span>
+                    </div>
+                </div>
+                <div class="punchcard-item stack-card-2">
+                    <div class="card-footer">
+                        <span>Biz name 2</span>
+                        <span class="cool-logo">LOGO</span>
+                    </div>
+                </div>
+                <div class="punchcard-item stack-card-1">
+                    <div class="stamp-row">
+                        <div class="stamp checked">✓</div>
+                        <div class="stamp checked">✓</div>
+                        <div class="stamp checked">✓</div>
+                        <div class="stamp checked">✓</div>
+                        <div class="stamp checked">✓</div>
+                    </div>
+                    <div class="stamp-row">
+                        <div class="stamp checked">✓</div>
+                        <div class="stamp"></div>
+                        <div class="stamp"></div>
+                        <div class="stamp"></div>
+                        <div class="reward-star">⭐</div>
+                    </div>
+                    <div class="card-footer">
+                        <span>Biz name 1</span>
+                        <span class="cool-logo">LOGO</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
     <div class="category-section">
+        <div class="category">
+            <h1>Category</h1>
+        </div>
         <div class="scroll-container">
-            <!-- Card 1 -->
             <div class="category-card">
                 <div class="card-image-placeholder"></div>
                 <div class="card-content">
@@ -46,7 +106,6 @@
                     <p class="rating">⭐ 5.0 rating</p>
                 </div>
             </div>
-            <!-- Card 2 -->
             <div class="category-card">
                 <div class="card-image-placeholder"></div>
                 <div class="card-content">
@@ -54,7 +113,6 @@
                     <p class="rating">⭐ 4.8 rating</p>
                 </div>
             </div>
-            <!-- Card 3 -->
             <div class="category-card">
                 <div class="card-image-placeholder"></div>
                 <div class="card-content">
@@ -62,7 +120,6 @@
                     <p class="rating">⭐ 4.9 rating</p>
                 </div>
             </div>
-            <!-- Card 4 -->
             <div class="category-card">
                 <div class="card-image-placeholder"></div>
                 <div class="card-content">
@@ -70,9 +127,7 @@
                     <p class="rating">⭐ 5.0 rating</p>
                 </div>
             </div>
-            <!-- Add more cards here if you like -->
-        </div>
+            </div>
     </div>
-    <!-- === END OF NEW HTML === -->
-</body>
+    </body>
 </html>

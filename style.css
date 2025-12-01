@@ -1,24 +1,72 @@
 body {
   font-family: Arial, sans-serif;
-  margin: 15px;
-  /* background-color: #f0f2f5; Added a light background color */
+  margin-top: 0px;
+  /* margin-left: 15px;
+  margin-right: 15px; */
+  width: 393px;
+ }
+
+#top-frame {
+  width: 100%;
+  height: 220px; 
+  background-image: url('mask.png');
+  background-size: cover;     
+  /* background-position: center 0%; <--- THIS IS THE LINE */
+  border-radius: 0 0 20px 20px;
+  padding: 15px;
+  padding-top: 40px;
+  box-sizing: border-box; 
+  margin-bottom: 20px;
+  /* margin-top: 0; */
 }
 
+.location-name {
+  /* Properties moved to .dropbtn */
+}
 
 .dropdown {
+  width: 180px;
+  height: 23px;
   position: relative;
 }
 
 /* Style the dropdown button */
 .dropbtn {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: white;
-  color: black;
-  /* padding: 16px; */
+  background-color: transparent;
+  color: white;
   font-size: 16px;
   border: none;
   cursor: pointer;
+
+  /* --- ADDED FOR ELLIPSIS & ARROW --- */
+  width: 100%;             /* Make button fill its 180px parent */
+  position: relative;       /* Allows us to position the arrow */
+  text-align: left;         /* Aligns text to the left */
+  
+  /* These are the ellipsis styles */
+  white-space: nowrap;      /* Keep text on one line */
+  overflow: hidden;         /* Hide overflowing text */
+  text-overflow: ellipsis;  /* Show "..." */
+
+  /* This adds space on the right for the arrow */
+  padding-right: 25px; 
+  box-sizing: border-box;  /* Ensures padding is included in the width */
 }
+
+/* --- ADDED FOR DROPDOWN ARROW --- */
+.dropbtn::after {
+  content: 'v'; /* This is the "v" arrow character */
+  font-family: sans-serif;
+  font-weight: bold;
+  color: white;
+  position: absolute; /* Positions it relative to the button */
+  right: 10px;        /* 10px from the right edge */
+  top: 50%;           /* 50% from the top */
+  transform: translateY(-50%) scaleY(0.7); 
+  pointer-events: none; /* Lets you click "through" the arrow */
+}
+
 
 /* Dropdown content */
 .dropdown-content {
@@ -54,52 +102,94 @@ body {
 }
 
 
-/* SEARCH BAR CSS */
-/* Add a black background color to the top navigation bar */
+/* === NEW & MODIFIED SEARCH STYLES === */
+
+/* This is the new flex container for the search bar and filter button */
+.search-filter-container {
+  display: flex;
+  align-items: center;
+  margin-top: 15px; /* Add space below the location dropdown */
+}
+
+/* This is the OLD .searchbar, now a flex container for the icon and input */
 .searchbar {
+  display: flex;
+  align-items: center;
+  flex-grow: 1; /* This is what makes it "longer" */
+  background-color: #EFEFEF; /* Light gray background from image */
+  border-radius: 15px;
+  padding: 10px 12px;
+  margin-right: 10px; /* Space between search bar and filter button */
   overflow: hidden;
-  background-color: white;
-  border-radius: 10px; /* Rounded corners */
+  opacity: 70%;
 }
 
-/* Style the links inside the navigation bar */
-.searchbar a {
-  float: left;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
+/* Style for the new search icon */
+.search-icon {
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+}
+.search-icon svg {
+  stroke: #888; /* Gray icon color */
 }
 
-/* Change the color of links on hover */
-.searchbar a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Style the search box inside the navigation bar */
+/* This is the MODIFIED input style */
 .searchbar input[type=text] {
-  background-color: #D9D9D9;
-  border-radius: 15px;  
-  color:gray;
-  float: left;
-  padding: 6px;
+  flex-grow: 1; /* Makes the input field fill the .searchbar */
+  background-color: transparent; /* Parent .searchbar has the color */
   border: none;
-  margin-top: 8px;
-  margin-right: 16px;
+  color: gray;
   font-size: 17px;
+  margin: 0;
+  padding: 0;
+  width: 100%; /* Fill the container */
 }
 
+/* Remove the default blue outline when clicking */
+.searchbar input[type=text]:focus {
+  outline: none;
+}
 
-/* Today's Deal */
-.zalando-sans-semiexpanded-welcome-message {
+/* This is the NEW filter button */
+.filter-btn {
+  background-color: #EFEFEF; /* Match search bar */
+  border: none;
+  border-radius: 15px; /* Match search bar */
+  padding: 10px; /* Make it squarish */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevents button from shrinking */
+  opacity: 70%;
+}
+
+.filter-btn svg {
+  stroke: #333; /* Darker color for icon */
+}
+
+/* === END OF NEW SEARCH STYLES === */
+
+
+h1 {
+  font-size: 16px;
   font-family: "Zalando Sans SemiExpanded", sans-serif;
-  color: blue;
+  font-weight: 400;
+  font-style: normal;
+  margin: 0px;
+}
+
+/* Welcome Message */
+.zalando-sans-semiexpanded-welcome-message h1 {
+  font-size: 28px;
+  font-family: "Zalando Sans SemiExpanded", sans-serif;
+  color: #2E298D;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
+  margin-top: 15px; /* Added margin for spacing */
+  margin-bottom: 10px; /* Reduced bottom margin */
 }
 
 /* Rewards */
@@ -107,13 +197,8 @@ body {
 .rewards {
   display: flex;
   justify-content: space-between; /* <-- THIS IS THE FIX */
-  align-items: center;           /* <-- This vertically centers them */
-  padding-left: 5%;
-}
-
-h1 {
-  font-size: 18px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  align-items: center;          /* <-- This vertically centers them */
+  margin-bottom: 7px;
 }
 
 .viewall {
@@ -123,110 +208,13 @@ h1 {
 }
 
 /* PunchCards */
-.punchcard {
-  background:#D9D9D9;
-  border: 3px solid gray;
-  border-radius: 10px; /* Adds rounded corners */
-  padding: 16px;
-  text-align: center;
-  aspect-ratio: 1 / 0.5;
-  /* margin: 12px; */
+
+#punchcard-frame {
+  width: 363px;
+  height: auto; /* Set height for the stack */
+  margin-left: auto;
+  margin-right: auto;
 }
-
-body {
-  font-family: Arial, sans-serif;
-  margin: 15px;
-  /* background-color: #f0f2f5; Added a light background color */
-}
-
-
-.dropdown {
-  position: relative;
-}
-
-/* Style the dropdown button */
-.dropbtn {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: white;
-  color: black;
-  /* padding: 16px; */
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-/* Dropdown content */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 200px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  border-radius: 15px;
-}
-
-/* Links inside dropdown content */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {
-  background-color: #f1f1f1
-}
-
-/* Show the dropdown content on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Change background color of dropdown button on hover */
-.dropdown:hover .dropbtn {
-  background-color: #D9D9D9;
-}
-
-
-/* SEARCH BAR CSS */
-/* Add a black background color to the top navigation bar */
-.searchbar {
-  overflow: hidden;
-  background-color: white;
-  border-radius: 10px; /* Rounded corners */
-}
-
-/* Style the links inside the navigation bar */
-.searchbar a {
-  float: left;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
-
-/* Change the color of links on hover */
-.searchbar a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-/* Style the search box inside the navigation bar */
-.searchbar input[type=text] {
-  background-color: #D9D9D9;
-  border-radius: 15px;  
-  color:gray;
-  float: left;
-  padding: 6px;
-  border: none;
-  margin-top: 8px;
-  margin-right: 16px;
-  font-size: 17px;
-}
-
 
 /* Today's Deal */
 .todaysdeal {
@@ -240,46 +228,17 @@ body {
   border-radius: 10px; /* Adds rounded corners */
   /* box-shadow: 0 4px 12px rgba(0,0,0,0.15); Adds a subtle shadow */
   aspect-ratio: 1 / 0.5; /* <--- Add this for a square */
-  object-fit: cover;   /* <--- Add this to fill the square */
+  object-fit: cover;     /* <--- Add this to fill the square */
 }
 
-/* Rewards */
-
-.rewards {
-  display: flex;
-  justify-content: space-between; /* <-- THIS IS THE FIX */
-  align-items: center;           /* <-- This vertically centers them */
-}
-
-h1 {
-  font-size: 18px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.viewall {
-  color: gray;
-  float: right;
-  text-align: right;
-}
-
-/* PunchCards */
-.punchcard {
-  background:#D9D9D9;
-  border: 3px solid gray;
-  border-radius: 10px; /* Adds rounded corners */
-  padding: 16px;
-  text-align: center;
-  aspect-ratio: 1 / 0.5;
-  /* margin: 12px; */
-}
 
 /* Container for the whole section */
 .category-section {
-  width: 100%;
-  /* padding-left: 5%; */
-  /* height: 30px; */
-  /* margin: 20px auto 0 auto; */
+  margin-top: 20px;
+  width: 373px;
   box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Title for the section */
@@ -344,26 +303,223 @@ h1 {
     flex-direction: column;
     align-items: flex-start;
   }
-  .searchbar {
-    margin-left: 0;
-    margin-top: 10px;
-    width: 100%;
-  }
-  .searchbar input[type=text] {
-    width: 90%;
-    margin-left: 0;
-  }
-  .todaysdeal img, .rewards, .category-section {
-      width: 95%; /* Use more width on small screens */
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 0;
-      padding-right: 0;
-  }
+  
+  /* Removed old .searchbar styles from media query */
+
   .category-section h1 {
     padding-left: 0%;
   }
   .scroll-container {
     /* padding-left: 5%; Add padding so first card isn't at edge */
   }
+}
+
+/* === NEW PUNCHCARD & WALLET STYLES === */
+
+/* 1. Link Resets (For index.html)
+/* ---------------------------------- */
+a.viewall-link,
+a.punchcard-stack-link {
+  text-decoration: none; /* Removes underline */
+  color: inherit; /* Makes link inherit text color */
+}
+
+
+/* 2. Reusable Punchcard Item (Used on both pages)
+/* ---------------------------------- */
+.punchcard-item {
+  background: #EFEFEF; /* Lighter gray from your image */
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-sizing: border-box;
+}
+
+.stamp-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+/* Remove bottom margin from the last stamp row */
+.punchcard-details-content .stamp-row:last-child {
+  margin-bottom: 0;
+}
+
+.stamp {
+  width: 44px;
+  height: 44px;
+  background-color: #FFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #2E298D; /* Blue color */
+  font-weight: bold;
+}
+
+.stamp.checked {
+  background-color: #2E298D;
+  color: #FFF;
+}
+
+.reward-star {
+  width: 44px;
+  height: 44px;
+  background-color: #FFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  font-family: "Zalando Sans SemiExpanded", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #333;
+}
+
+.cool-logo {
+  font-size: 10px;
+  font-weight: bold;
+  background: #D9D9D9;
+  color: #888;
+  padding: 8px 10px;
+  border-radius: 50%;
+}
+
+
+/* 3. Dashboard Stack (For index.html)
+/* ---------------------------------- */
+#punchcard-frame {
+  height: auto; /* Allow height to be dynamic */
+}
+
+.punchcard-stack {
+  position: relative;
+  width: 100%;
+  height: 200px; /* Set height for the stack */
+}
+
+/* Position all cards in the stack */
+.punchcard-stack .punchcard-item {
+  position: absolute;
+  width: 100%;
+  transition: all 0.2s ease-out;
+}
+
+.punchcard-stack-link:hover .stack-card-1 {
+  transform: translateY(-10px); /* Lifts top card on hover */
+}
+.punchcard-stack-link:hover .stack-card-2 {
+  transform: translateY(-5px); /* Lifts middle card on hover */
+}
+
+.stack-card-1 {
+  z-index: 3; /* Top card */
+  top: 0;
+}
+.stack-card-2 {
+  z-index: 2; /* Middle card */
+  top: 12px;
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+.stack-card-3 {
+  z-index: 1; /* Bottom card */
+  top: 24px;
+  transform: scale(0.90);
+  opacity: 0.6;
+}
+
+
+/* 4. Wallet Page (For wallet.html)
+/* ---------------------------------- */
+.wallet-page-container {
+  padding: 15px;
+}
+
+.wallet-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.wallet-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.back-button {
+  color: #333;
+  text-decoration: none;
+  background: #EFEFEF;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* === NEW ACCORDION STYLES FOR WALLET === */
+
+/* Style the new <details> element */
+details.punchcard-item {
+  background: #EFEFEF;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-sizing: border-box;
+  margin-bottom: 15px; /* Space between cards */
+
+  /* This uses flexbox to re-order the elements */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style the new <summary> element */
+summary.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Zalando Sans SemiExpanded", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
+  
+  /* This moves the summary to the bottom */
+  order: 2;
+  margin-top: 25px; /* Re-adds the margin */
+}
+
+/* This is the new wrapper for the stamps */
+.punchcard-details-content {
+  /* This moves the stamps to the top */
+  order: 1;
+}
+
+
+/* --- This CSS hides the default triangle/arrow --- */
+
+/* For Chrome, Safari, Edge */
+summary.card-footer::-webkit-details-marker {
+  display: none;
+}
+
+/* For Firefox */
+summary.card-footer {
+  list-style: none;
 }
