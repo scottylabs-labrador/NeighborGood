@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Auth } from "./api";
+import { Auth } from "../api";
 
 declare global {
   interface Window {
