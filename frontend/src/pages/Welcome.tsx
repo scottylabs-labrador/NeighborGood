@@ -1,3 +1,5 @@
+/** Landing screen — shown to users who aren't logged in. */
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,56 +8,51 @@ export default function Welcome() {
 
   return (
     <div style={styles.page}>
-      {/* Main welcome image */}
       <img
         src="/assets/group58.svg"
-        alt="Punchcard welcome"
+        alt="Punchcard welcome illustration"
         style={styles.hero}
       />
 
-      {/* Buttons */}
-      <button style={styles.primary} onClick={() => navigate("/register")}>
+      <button style={styles.primaryBtn} onClick={() => navigate("/register")}>
         Get started
       </button>
 
-      <button style={styles.secondary} onClick={() => navigate("/login")}>
+      <button style={styles.secondaryBtn} onClick={() => navigate("/login")}>
         I have an account
       </button>
     </div>
   );
 }
 
+// Styles scoped to this component — no global side-effects
 const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: "100vh",
-    background: "#f3f4ff", // light purple background
+    background: "#f3f4ff",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
   },
-
   hero: {
     width: 360,
     maxWidth: "90vw",
     height: "auto",
     marginBottom: 40,
   },
-
-  primary: {
+  primaryBtn: {
     width: 220,
     height: 52,
     borderRadius: 999,
     border: "none",
-    background:
-      "linear-gradient(180deg, rgba(63,60,168,1) 0%, rgba(37,33,120,1) 100%)",
+    background: "linear-gradient(180deg, #3f3ca8 0%, #252178 100%)",
     color: "white",
     fontSize: 16,
     cursor: "pointer",
     marginBottom: 16,
   },
-
-  secondary: {
+  secondaryBtn: {
     width: 240,
     height: 52,
     borderRadius: 999,
