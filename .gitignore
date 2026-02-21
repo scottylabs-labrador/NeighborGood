@@ -1,1 +1,14 @@
+# Dependencies
 venv/
+frontend/node_modules/
+
+# Build output
+frontend/dist/
+
+# Environment variables
+.env
+frontend/.env
+
+# OS files
+.DS_Store
+Thumbs.db
