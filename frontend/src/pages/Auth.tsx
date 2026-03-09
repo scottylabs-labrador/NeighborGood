@@ -1,15 +1,15 @@
 /**
  * Auth — login and register screens.
  *
- * Design spec (from Figma screenshot):
- * - Background: #F9F9F9 with crosshatch "+" pattern (matches Welcome screen)
- * - "LOGIN" / "REGISTER" in large spaced monospace caps
- * - USERNAME/EMAIL + PASSWORD labels in small caps above underline-only inputs
+ * Design spec (Figma nodes 758:2946 login / 753:1997 register):
+ * - Background: #F9F9F9
+ * - "LOGIN" / "REGISTER" in large monospace caps (dot-matrix style)
+ * - USERNAME/EMAIL + PASSWORD labels (DM Mono, small caps) above underline inputs
  * - "Forgot?" inline with PASSWORD label
  * - "Remember me" checkbox row (login only)
- * - Black pill "LOG IN" / "SIGN UP" primary CTA
+ * - Black rounded-rect "LOG IN" / "SIGN UP" CTA
  * - "or log in with" divider
- * - Google + Apple pill buttons (white, bordered)
+ * - Google + Apple outlined buttons
  * - Footer: "DON'T HAVE AN ACCOUNT? SIGN UP" / "ALREADY HAVE AN ACCOUNT? LOG IN"
  */
 
@@ -39,8 +39,8 @@ interface Props {
 }
 
 export default function Auth({ mode }: Props) {
-  const navigate   = useNavigate();
-  const googleRef  = useRef<HTMLDivElement>(null);
+  const navigate  = useNavigate();
+  const googleRef = useRef<HTMLDivElement>(null);
   const [remember, setRemember] = useState(false);
   const [error, setError]       = useState("");
 
@@ -63,7 +63,6 @@ export default function Auth({ mode }: Props) {
           }
         },
       });
-      // Render into hidden div so SDK is initialised; we use our own button styling.
       window.google.accounts.id.renderButton(googleRef.current, {
         theme: "outline", size: "large", width: 1,
       });
@@ -79,26 +78,15 @@ export default function Auth({ mode }: Props) {
   return (
     <div style={s.page}>
 
-      {/* Crosshatch background — same pattern as Welcome screen */}
-      <svg style={s.bgPattern} aria-hidden="true">
-        <defs>
-          <pattern id="cross2" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
-            <line x1="11" y1="3" x2="11" y2="19" stroke="#0E0E0E" strokeWidth="0.7" opacity="0.12"/>
-            <line x1="3" y1="11" x2="19" y2="11" stroke="#0E0E0E" strokeWidth="0.7" opacity="0.12"/>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#cross2)"/>
-      </svg>
-
-      {/* ── Form card ── */}
-      <div style={s.card}>
+      {/* ── Form container ── */}
+      <div style={s.container}>
 
         {/* Page heading */}
-        <h1 style={s.heading}>{isLogin ? "LOGIN" : "REGISTER"}</h1>
+        <h1 style={s.heading}>{isLogin ? "Login" : "Register"}</h1>
 
         {/* ── Fields ── */}
         <div style={s.fields}>
-          <InputField label="USERNAME / EMAIL" type="text" />
+          <InputField label="USERNAME/EMAIL" type="text" />
           <InputField
             label="PASSWORD"
             type="password"
@@ -109,12 +97,15 @@ export default function Auth({ mode }: Props) {
         {/* Remember me (login only) */}
         {isLogin && (
           <label style={s.rememberRow}>
-            <input
-              type="checkbox"
-              checked={remember}
-              onChange={e => setRemember(e.target.checked)}
-              style={s.checkbox}
-            />
+            <div style={s.checkboxBox}>
+              {remember && <span style={s.checkmark}>✓</span>}
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={e => setRemember(e.target.checked)}
+                style={s.hiddenCheckbox}
+              />
+            </div>
             <span style={s.rememberLabel}>Remember me</span>
           </label>
         )}
@@ -145,12 +136,14 @@ export default function Auth({ mode }: Props) {
         {/* Footer switch link */}
         <p style={s.footer}>
           {isLogin ? (
-            <>DON&apos;T HAVE AN ACCOUNT?{" "}
-              <Link to="/register" style={s.footerLink}>SIGN UP</Link>
+            <>
+              <span style={s.footerText}>{"Don't have an account? "}</span>
+              <Link to="/register" style={s.footerLink}>Sign up</Link>
             </>
           ) : (
-            <>ALREADY HAVE AN ACCOUNT?{" "}
-              <Link to="/login" style={s.footerLink}>LOG IN</Link>
+            <>
+              <span style={s.footerText}>{"Already have an account? "}</span>
+              <Link to="/login" style={s.footerLink}>Log in</Link>
             </>
           )}
         </p>
@@ -181,33 +174,38 @@ function InputField({ label, type, rightSlot }: FieldProps) {
   );
 }
 
+const MONO  = "'DM Mono', 'Courier New', Courier, monospace";
+const BRAND = "'Bitcount Grid Single', 'Courier New', monospace";
+const INTER = "'Inter', Arial, sans-serif";
+const GRAY  = "#585858";
+
 const f: Record<string, React.CSSProperties> = {
   wrap: {
     display: "flex",
     flexDirection: "column",
-    gap: 6,
+    gap: 35,
   },
   labelRow: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "baseline",
+    alignItems: "center",
   },
   label: {
-    fontSize: 10,
-    letterSpacing: "0.12em",
-    color: "#666",
-    fontFamily: "'Courier New', Courier, monospace",
+    fontSize: 14,
+    letterSpacing: "0.05em",
+    color: GRAY,
+    fontFamily: MONO,
     textTransform: "uppercase" as const,
   },
   input: {
     border: "none",
-    borderBottom: "1.5px solid #bbb",
+    borderBottom: "1px solid #bbb",
     background: "transparent",
-    padding: "9px 0 6px",
+    padding: "0 0 6px",
     fontSize: 15,
     color: "#0E0E0E",
     outline: "none",
-    fontFamily: "'Courier New', Courier, monospace",
+    fontFamily: MONO,
     width: "100%",
     boxSizing: "border-box" as const,
   },
@@ -218,7 +216,7 @@ const f: Record<string, React.CSSProperties> = {
 ───────────────────────────────────────────── */
 function GoogleIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 48 48" style={{ marginRight: 7, flexShrink: 0 }}>
+    <svg width="18" height="18" viewBox="0 0 48 48" style={{ marginRight: 8, flexShrink: 0 }}>
       <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
       <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
       <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -229,8 +227,10 @@ function GoogleIcon() {
 
 function AppleIcon() {
   return (
-    <svg width="14" height="17" viewBox="0 0 814 1000" style={{ marginRight: 7, flexShrink: 0 }} fill="currentColor">
+    <svg width="16" height="20" viewBox="0 0 814 1000" style={{ marginRight: 8, flexShrink: 0 }} fill="currentColor">
       <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 411.8 32 326.7 32 242.7c0-150.4 98.1-230 192.4-230 55 0 100.9 36.4 135.4 36.4 32.6 0 84.1-38.4 147.7-38.4 23.6 0 108.1 2 166.3 87.3zm-90.5-87.3c-12.1-50.5-44.2-102.5-92.9-131.7-34.2-20.7-76-36.4-117.7-36.4-4.8 0-9.7.3-14.5.9 2 64.8 25.7 125.5 60.5 168.5 35.1 43.2 87.1 73.2 139.6 79.9 7.8 1 15.5 1.3 23.2 1.3-.1-28.1-.9-54.6-2.7-82.5z"/>
+      {/* leaf */}
+      <path d="M527.3 4.3c-13.5 63.8-62.4 105.6-109.1 102.4 0 0-3.3-52.8 46.5-90.9C513.4-22 563.8 1.5 527.3 4.3z"/>
     </svg>
   );
 }
@@ -238,7 +238,6 @@ function AppleIcon() {
 /* ─────────────────────────────────────────────
    Styles
 ───────────────────────────────────────────── */
-const FONT  = "'Courier New', Courier, monospace";
 const BLACK = "#0E0E0E";
 const BG    = "#F9F9F9";
 
@@ -254,150 +253,162 @@ const s: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontFamily: FONT,
-    padding: "32px 0",
+    fontFamily: MONO,
+    padding: "48px 0",
     boxSizing: "border-box",
   },
 
-  bgPattern: {
-    position: "absolute",
-    inset: 0,
+  container: {
     width: "100%",
-    height: "100%",
-    pointerEvents: "none",
-    zIndex: 0,
-  },
-
-  card: {
-    position: "relative",
-    zIndex: 1,
-    width: "100%",
-    maxWidth: 320,
+    maxWidth: 311,
     display: "flex",
     flexDirection: "column",
     gap: 0,
   },
 
-  /* "LOGIN" / "REGISTER" */
+  /* "LOGIN" / "REGISTER" heading */
   heading: {
-    margin: "0 0 40px 0",
+    margin: "0 0 109px 0",
     fontSize: 38,
-    fontWeight: 700,
-    letterSpacing: "0.22em",
+    fontWeight: 400,
+    letterSpacing: "0.05em",
     color: BLACK,
-    fontFamily: FONT,
+    fontFamily: BRAND,
     textAlign: "center" as const,
-    /* Slight tracking gives the dot-matrix LED feel */
+    textTransform: "uppercase" as const,
   },
 
   fields: {
     display: "flex",
     flexDirection: "column" as const,
-    gap: 30,
-    marginBottom: 18,
+    gap: 14,
+    marginBottom: 13,
   },
 
   forgot: {
-    fontSize: 10,
-    letterSpacing: "0.06em",
-    color: "#999",
+    fontSize: 12,
+    color: GRAY,
     cursor: "pointer",
-    fontFamily: FONT,
+    fontFamily: INTER,
     textDecoration: "none",
+    textTransform: "none" as const,
   },
 
   /* "Remember me" */
   rememberRow: {
     display: "flex",
     alignItems: "center",
-    gap: 8,
+    gap: 6,
     cursor: "pointer",
-    marginBottom: 28,
-    marginTop: 6,
+    marginBottom: 186,
+    marginTop: 0,
+    position: "relative" as const,
   },
-  checkbox: {
+  checkboxBox: {
     width: 13,
     height: 13,
-    accentColor: BLACK,
-    cursor: "pointer",
+    border: "1px solid #585858",
+    borderRadius: 3,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     flexShrink: 0,
+    position: "relative" as const,
+    cursor: "pointer",
+  },
+  checkmark: {
+    fontSize: 9,
+    color: BLACK,
+    lineHeight: 1,
+  },
+  hiddenCheckbox: {
+    position: "absolute" as const,
+    opacity: 0,
+    width: "100%",
+    height: "100%",
+    cursor: "pointer",
+    margin: 0,
   },
   rememberLabel: {
-    fontSize: 11,
-    color: "#666",
-    letterSpacing: "0.04em",
-    fontFamily: FONT,
+    fontSize: 12,
+    color: GRAY,
+    fontFamily: INTER,
   },
 
   errorMsg: {
     color: "crimson",
     fontSize: 11,
     margin: "0 0 10px",
-    fontFamily: FONT,
+    fontFamily: MONO,
   },
 
   /* "LOG IN" / "SIGN UP" */
   primaryBtn: {
     width: "100%",
-    height: 52,
-    borderRadius: 999,
+    height: 48,
+    borderRadius: 15,
     border: "none",
     background: BLACK,
     color: BG,
-    fontSize: 13,
-    fontWeight: 700,
-    letterSpacing: "0.15em",
+    fontSize: 14,
+    fontWeight: 400,
+    letterSpacing: "0.08em",
     cursor: "pointer",
-    fontFamily: FONT,
-    marginTop: 4,
-    marginBottom: 20,
+    fontFamily: MONO,
+    textTransform: "uppercase" as const,
+    marginBottom: 6,
+    boxShadow: "inset 0 0 20px rgba(255,255,255,0.25)",
     transition: "opacity 0.15s",
   },
 
   orText: {
     textAlign: "center" as const,
-    fontSize: 11,
-    color: "#999",
-    letterSpacing: "0.06em",
-    margin: "0 0 14px",
-    fontFamily: FONT,
+    fontSize: 14,
+    color: GRAY,
+    margin: "0 0 6px",
+    fontFamily: INTER,
   },
 
   socialRow: {
     display: "flex",
-    gap: 12,
-    marginBottom: 36,
+    gap: 22,
+    marginBottom: 78,
   },
   socialBtn: {
     flex: 1,
-    height: 48,
-    borderRadius: 999,
-    border: "1.5px solid #ccc",
-    background: "#fff",
+    height: 45,
+    borderRadius: 15,
+    border: `1px solid ${BLACK}`,
+    background: "transparent",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 12,
-    fontWeight: 600,
+    fontSize: 16,
+    fontWeight: 400,
     cursor: "pointer",
-    fontFamily: FONT,
-    letterSpacing: "0.04em",
+    fontFamily: INTER,
     color: BLACK,
-    gap: 0,
   },
 
   footer: {
     textAlign: "center" as const,
-    fontSize: 10,
-    color: "#999",
-    letterSpacing: "0.09em",
     margin: 0,
-    fontFamily: FONT,
+    fontFamily: MONO,
+    fontSize: 14,
+    color: GRAY,
+    textTransform: "uppercase" as const,
+    letterSpacing: "0.04em",
+    lineHeight: 0,
+  },
+  footerText: {
+    lineHeight: "normal",
   },
   footerLink: {
-    color: BLACK,
-    fontWeight: 700,
+    color: GRAY,
     textDecoration: "underline",
-    letterSpacing: "0.09em",
+    fontFamily: MONO,
+    letterSpacing: "0.04em",
+    lineHeight: "normal",
+    textTransform: "uppercase" as const,
   },
 };

@@ -1,12 +1,12 @@
 /**
- * Welcome screen — pixel-faithful recreation of the Figma SVG design.
+ * Welcome screen — matches Figma wireframe (node 753:1997).
  *
- * Design spec (extracted from SVG):
- * - Background: #F9F9F9 with subtle crosshatch "+" pattern
- * - Three stacked gray cards (#E2E3E7) with rotated layering + noise/blur effects
- * - Black bottom section with wavy cutout top edge
- * - "PUNCHCARD" + "SHOP SMALL. PUNCH BIG [✦]" dot-matrix branding
- * - Two pill buttons: filled black "GET STARTED", outlined "I HAVE AN ACCOUNT"
+ * Layout:
+ * - Off-white (#F9F9F9) background
+ * - Black rounded-rectangle "wallet" container (333px × ~330px, 30px radius)
+ *   └─ 3 stacked gray credit cards (with radial-gradient texture) inside/above it
+ *   └─ "PUNCHCARD" + tagline in white at the bottom of the black area
+ * - "GET STARTED" (filled black) + "I HAVE AN ACCOUNT" (outlined) buttons below
  */
 
 import React from "react";
@@ -18,82 +18,33 @@ export default function Welcome() {
   return (
     <div style={s.page}>
 
-      {/* ── Crosshatch background pattern ── */}
-      <svg style={s.bgPattern} aria-hidden="true">
-        <defs>
-          <pattern id="cross" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
-            {/* vertical stroke of "+" */}
-            <line x1="11" y1="3" x2="11" y2="19" stroke="#0E0E0E" strokeWidth="0.7" opacity="0.13"/>
-            {/* horizontal stroke of "+" */}
-            <line x1="3" y1="11" x2="19" y2="11" stroke="#0E0E0E" strokeWidth="0.7" opacity="0.13"/>
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#cross)"/>
-      </svg>
-
-      {/* ── Three-card stack ── */}
+      {/* ── Hero: black wallet container + stacked cards ── */}
       <div style={s.heroArea}>
-        <div style={s.stackWrap}>
 
-          {/* Card C — furthest back, steepest rotation (~8.5°) */}
+        {/* Black rounded wallet */}
+        <div style={s.wallet}>
+
+          {/* Card C — back, steepest rotation (~8.5°) */}
           <div style={{ ...s.card, ...s.cardC }}>
-            <CardTexture top={-30} opacity={0.85} />
+            <CardTexture />
           </div>
 
-          {/* Card B — middle layer, ~0.3° tilt */}
+          {/* Card B — middle layer */}
           <div style={{ ...s.card, ...s.cardB }}>
-            <CardTexture top={-28} opacity={0.82} />
+            <CardTexture />
           </div>
 
-          {/* Card A — front card, ~0.3° tilt, fully visible */}
+          {/* Card A — front */}
           <div style={{ ...s.card, ...s.cardA }}>
-            <CardTexture top={-26} opacity={0.80} />
+            <CardTexture />
           </div>
 
-        </div>
-      </div>
-
-      {/* ── Black bottom section with curved cutout ── */}
-      <div style={s.bottomWrap}>
-        {/* SVG wave that transitions page bg → black */}
-        <svg
-          viewBox="0 0 393 55"
-          preserveAspectRatio="none"
-          style={s.wave}
-          aria-hidden="true"
-        >
-          {/*
-            Recreates the "card-pocket" notch from the Figma SVG:
-            flat top on both sides, with a V-shaped dip in the centre
-            that mirrors the stacked-card silhouette above.
-          */}
-          <path
-            d="
-              M0,55 L0,28
-              Q35,28 47,15
-              L66,0
-              Q85,-18 114,-18
-              L196.5,-18
-              L279,-18
-              Q308,-18 327,0
-              L346,15
-              Q358,28 393,28
-              L393,55 Z
-            "
-            fill="#0E0E0E"
-          />
-        </svg>
-
-        <div style={s.blackPanel}>
-          <p style={s.brandName}>PUNCHCARD</p>
-          <p style={s.brandTagline}>SHOP SMALL. PUNCH BIG [✦]</p>
-
-          {/* Subtle dot-row decoration echoing the dot-matrix in the SVG */}
-          <div style={s.dotRow}>
-            {Array.from({ length: 20 }).map((_, i) => (
-              <span key={i} style={s.dot} />
-            ))}
+          {/* Brand text in the lower black area */}
+          <div style={s.brandArea}>
+            <p style={s.brandName}>PUNCHCARD</p>
+            <p style={s.brandTagline}>SHOP SMALL. PUNCH BIG [✦]</p>
           </div>
+
         </div>
       </div>
 
@@ -119,23 +70,17 @@ export default function Welcome() {
 }
 
 /* ─────────────────────────────────────────────
-   CardTexture — the blurred radial dark circle
-   that appears inside each card in the Figma
+   CardTexture — radial dark gradient inside each card
 ───────────────────────────────────────────── */
-function CardTexture({ top, opacity }: { top: number; opacity: number }) {
+function CardTexture() {
   return (
     <div
       style={{
         position: "absolute",
         inset: 0,
         borderRadius: "inherit",
-        background: `radial-gradient(
-          ellipse 65% 75% at 53% ${top}%,
-          rgba(14,14,14,${opacity}) 0%,
-          transparent 60%
-        )`,
-        // Subtle grain overlay
-        backdropFilter: "blur(0.5px)",
+        background:
+          "radial-gradient(ellipse 80% 80% at 50% -10%, rgba(14,14,14,0.82) 0%, transparent 65%)",
       }}
     />
   );
@@ -144,14 +89,15 @@ function CardTexture({ top, opacity }: { top: number; opacity: number }) {
 /* ─────────────────────────────────────────────
    Styles
 ───────────────────────────────────────────── */
-const FONT   = "'Courier New', Courier, monospace";
-const BLACK  = "#0E0E0E";
-const CARD   = "#E2E3E7";
-const BG     = "#F9F9F9";
+const MONO  = "'DM Mono', 'Courier New', Courier, monospace";
+const BRAND = "'Bitcount Grid Single', 'Courier New', monospace";
+const BLACK = "#0E0E0E";
+const CARD  = "#E2E3E7";
+const BG    = "#F9F9F9";
+const LGRAY = "#B7B7B7";
 
 const s: Record<string, React.CSSProperties> = {
 
-  /* Root page */
   page: {
     position: "relative",
     width: "100%",
@@ -163,37 +109,28 @@ const s: Record<string, React.CSSProperties> = {
     flexDirection: "column",
     alignItems: "center",
     overflow: "hidden",
-    fontFamily: FONT,
-  },
-
-  /* Crosshatch sits behind everything */
-  bgPattern: {
-    position: "absolute",
-    inset: 0,
-    width: "100%",
-    height: "100%",
-    pointerEvents: "none",
-    zIndex: 0,
+    fontFamily: MONO,
   },
 
   /* ── Hero ── */
   heroArea: {
     position: "relative",
-    zIndex: 1,
     width: "100%",
-    height: 390,
     display: "flex",
-    alignItems: "flex-start",
     justifyContent: "center",
-    paddingTop: 58,
+    paddingTop: 60,
+    paddingBottom: 28,
     boxSizing: "border-box",
   },
 
-  /* Container that establishes stacking context for the three cards */
-  stackWrap: {
+  /* Black rounded wallet container */
+  wallet: {
     position: "relative",
-    width: 302,
-    height: 310,
+    width: 333,
+    height: 330,
+    borderRadius: 30,
+    background: BLACK,
+    overflow: "visible",
   },
 
   /* Shared card base */
@@ -204,129 +141,104 @@ const s: Record<string, React.CSSProperties> = {
     borderRadius: 23,
     background: CARD,
     overflow: "hidden",
-    boxShadow: "0 7px 20px rgba(0,0,0,0.12)",
+    boxShadow: "0 6px 18px rgba(0,0,0,0.18)",
   },
 
-  /* Back card — rotated ~8.5°, peeking out top-left */
+  /* Back card — rotated ~8.5°, sits above and slightly left */
   cardC: {
-    top: 0,
-    left: -8,
+    top: -42,
+    left: 15,
     transform: "rotate(8.5deg)",
     transformOrigin: "bottom center",
     zIndex: 1,
   },
 
-  /* Middle card — very slight tilt, offset downward */
+  /* Middle card — very slight tilt */
   cardB: {
-    top: 50,
-    left: 0,
+    top: -10,
+    left: 15,
     transform: "rotate(0.3deg)",
     zIndex: 2,
   },
 
-  /* Front card — on top, fills the bottom of the stack area */
+  /* Front card — no tilt, sits lowest in the stack */
   cardA: {
-    top: 102,
-    left: 0,
+    top: 30,
+    left: 15,
     transform: "rotate(0.29deg)",
     zIndex: 3,
   },
 
-  /* ── Black bottom section ── */
-  bottomWrap: {
-    position: "relative",
-    zIndex: 2,
-    width: "100%",
-    /* Pull up so the wave overlaps the card stack slightly */
-    marginTop: -20,
-  },
-
-  /* The wave SVG */
-  wave: {
-    display: "block",
-    width: "100%",
-    height: 55,
-    marginBottom: -1, /* prevent hairline gap */
-  },
-
-  blackPanel: {
-    background: BLACK,
-    padding: "4px 30px 32px",
+  /* PUNCHCARD branding at bottom of wallet */
+  brandArea: {
+    position: "absolute",
+    bottom: 22,
+    left: 24,
+    zIndex: 4,
   },
 
   brandName: {
     margin: 0,
-    fontSize: 26,
-    fontWeight: 700,
-    letterSpacing: "0.14em",
+    fontSize: 28,
+    fontWeight: 400,
+    letterSpacing: "0.05em",
     color: BG,
-    fontFamily: FONT,
-    lineHeight: 1.15,
+    fontFamily: BRAND,
+    lineHeight: 1.1,
+    textTransform: "uppercase",
   },
 
   brandTagline: {
-    margin: "6px 0 14px",
-    fontSize: 11,
-    letterSpacing: "0.09em",
-    color: "#888",
-    fontFamily: FONT,
-  },
-
-  dotRow: {
-    display: "flex",
-    gap: 5,
-    opacity: 0.25,
-  },
-  dot: {
-    display: "inline-block",
-    width: 4,
-    height: 4,
-    borderRadius: "50%",
-    background: BG,
+    margin: "5px 0 0",
+    fontSize: 10,
+    letterSpacing: "0.08em",
+    color: LGRAY,
+    fontFamily: MONO,
+    textTransform: "uppercase",
   },
 
   /* ── Buttons ── */
   btnArea: {
-    position: "relative",
-    zIndex: 2,
     width: "100%",
-    background: BG,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: 14,
-    padding: "28px 44px 52px",
+    gap: 13,
+    padding: "0 44px",
     boxSizing: "border-box",
   },
 
   primaryBtn: {
     width: "100%",
-    maxWidth: 245,
-    height: 52,
-    borderRadius: 999,
+    maxWidth: 210,
+    height: 48,
+    borderRadius: 15,
     border: "none",
     background: BLACK,
     color: BG,
-    fontSize: 13,
-    fontWeight: 700,
-    letterSpacing: "0.13em",
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: "0.08em",
     cursor: "pointer",
-    fontFamily: FONT,
+    fontFamily: MONO,
+    textTransform: "uppercase",
     transition: "opacity 0.15s",
+    boxShadow: "inset 0 0 20px rgba(255,255,255,0.15)",
   },
 
   secondaryBtn: {
     width: "100%",
-    maxWidth: 265,
-    height: 52,
-    borderRadius: 999,
+    maxWidth: 260,
+    height: 48,
+    borderRadius: 15,
     background: "transparent",
-    border: `2px solid ${BLACK}`,
+    border: `1.5px solid ${BLACK}`,
     color: BLACK,
-    fontSize: 13,
-    fontWeight: 700,
-    letterSpacing: "0.13em",
+    fontSize: 14,
+    fontWeight: 500,
+    letterSpacing: "0.08em",
     cursor: "pointer",
-    fontFamily: FONT,
+    fontFamily: MONO,
+    textTransform: "uppercase",
   },
 };
