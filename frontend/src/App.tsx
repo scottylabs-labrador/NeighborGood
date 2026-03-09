@@ -8,6 +8,7 @@ import Welcome   from "./pages/Welcome";
 import Auth      from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Wallet    from "./pages/Wallet";
+import Browse    from "./pages/Browse";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/register"  element={<Auth mode="register" />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/wallet"    element={<Wallet />} />
+        <Route path="/browse"    element={<Browse />} />
       </Routes>
     </BrowserRouter>
   );
