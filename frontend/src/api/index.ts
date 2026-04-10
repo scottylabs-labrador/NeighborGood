@@ -10,9 +10,9 @@
 
 // Vite exposes env variables prefixed with VITE_ at build time.
 // Create a .env file at the project root with:
-//   VITE_API_BASE=http://127.0.0.1:8001
+//   VITE_API_BASE=http://localhost:8001
 // Falls back to localhost if the variable isn't set (handy for quick local runs).
-const API_BASE = import.meta.env.VITE_API_BASE ?? "http://127.0.0.1:8001";
+const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:8001";
 
 // ---------------------------------------------------------------------------
 // Generic request helper
@@ -91,6 +91,42 @@ export interface GoogleUser {
   sub?: string; // Google's permanent, stable user ID — use this as your DB key,
                 // not email (email can change, sub never does)
 }
+
+// ---------------------------------------------------------------------------
+// Shared types
+// ---------------------------------------------------------------------------
+
+export interface CardData {
+  id: number;
+  businessName: string;
+  totalStamps: number;
+  usedStamps: number;
+}
+
+// ---------------------------------------------------------------------------
+// Card endpoints
+// ---------------------------------------------------------------------------
+
+export const Cards = {
+  getAll: () =>
+    request<{ ok: boolean; cards: CardData[] }>("/cards"),
+};
+
+// ---------------------------------------------------------------------------
+// Payment endpoints
+// ---------------------------------------------------------------------------
+
+export const Payment = {
+  /**
+   * Authenticate a payment and add one stamp to the given card.
+   * Returns the updated card so the UI can reflect the new stamp count.
+   */
+  authenticate: (card_id: number) =>
+    request<{ ok: boolean; card: CardData }>("/payment/authenticate", {
+      method: "POST",
+      body: JSON.stringify({ card_id }),
+    }),
+};
 
 // ---------------------------------------------------------------------------
 // Auth endpoints
