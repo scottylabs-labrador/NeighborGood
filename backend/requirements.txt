@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 pydantic
 google-auth
+stripe
+python-dotenv
